@@ -89,7 +89,7 @@ precmd() {
 
 # Define prompts
 #
-PROMPT="%(?.%F{8}.%F{red})➟%f " # Display a red prompt char on failure
+PROMPT="%{$bg[red]%}$VAULTED_ENV%{$reset_color%}%(?.%F{8}.%F{red})➟%f " # Display a red prompt char on failure
 RPROMPT="%F{8}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
 
 # ------------------------------------------------------------------------------
