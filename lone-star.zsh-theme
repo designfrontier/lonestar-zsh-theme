@@ -55,9 +55,14 @@ git_dirty() {
 }
 
 # Display information about the current repository
+#   or if not in a repo display current directory
 #
 repo_information() {
-    echo "%F{cyan}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_2_%f"
+    if [[ -z ${vcs_info_msg_0_%%/.} ]] then
+        echo "%F{cyan}${PWD/#$HOME/~}%f"
+    else
+        echo "%F{cyan}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_2_%f"
+    fi
 }
 
 # Displays the exec time of the last command if set threshold was exceeded
@@ -84,7 +89,7 @@ precmd() {
 
 # Define prompts
 #
-PROMPT="%{$bg[red]%}$VAULTED_ENV%{$reset_color%}%(?.%F{8}.%F{red})➟%f " # Display a red prompt char on failure
+PROMPT="%(?.%F{8}.%F{red})➟%f " # Display a red prompt char on failure
 RPROMPT="%F{8}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
 
 # ------------------------------------------------------------------------------
