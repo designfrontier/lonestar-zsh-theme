@@ -54,6 +54,15 @@ git_dirty() {
     command git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ] && echo "%F{red}★%f"
 }
 
+# Check for rebase in progress
+#
+get_rebase() {
+    # Check if we're in a git repo
+    command git rev-parse --is-inside-work-tree &>/dev/null || return
+    # Check if there is a rebase in progress
+    command  ls ".git/rebase-apply" &>/dev/null; [ $? -eq 1 ] || echo "%F{yellow}[rebasing]%f"
+}
+
 # Display information about the current repository
 #   or if not in a repo display current directory
 #
@@ -61,7 +70,7 @@ repo_information() {
     if [[ -z ${vcs_info_msg_0_%%/.} ]] then
         echo "%F{cyan}${PWD/#$HOME/~}%f"
     else
-        echo "%F{cyan}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_2_%f"
+        echo "%F{cyan}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_2_`get_rebase` $vcs_info_msg_3%f"
     fi
 }
 
